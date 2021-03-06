@@ -1,7 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+function App({ authService }) {
     return <h1>hello</h1>;
 }
 
