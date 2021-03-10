@@ -1,3 +1,8 @@
-.title{
+.preview{
     flex-basis: 50%;
+    background-color: violet;
+}
+
+.title{
+    text-align: center;
 }

@@ -1,3 +1,8 @@
-.title{
+.editor{
     flex-basis: 50%;
+    background-color: turquoise;
+}
+
+.title{
+    text-align: center;
 }
