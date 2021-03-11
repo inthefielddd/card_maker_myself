@@ -7,9 +7,9 @@ import Preview from '../preview/preview';
 import styles from './maker.module.css';
 
 const Maker = ({ authService }) => {
-    const [cards, setCards] = useState([
-        {
-            id: 1,
+    const [cards, setCards] = useState({
+        1: {
+            id: '1',
             name: 'Hyeon Ji',
             company: 'Ola',
             theme: 'dark',
@@ -19,9 +19,8 @@ const Maker = ({ authService }) => {
             fileName: 'hj',
             fileURL: null,
         },
-
-        {
-            id: 2,
+        2: {
+            id: '2',
             name: 'DAN BI',
             company: 'ICIS',
             theme: 'light',
@@ -31,8 +30,8 @@ const Maker = ({ authService }) => {
             fileName: 'hj',
             fileURL: 'hj.png',
         },
-        {
-            id: 3,
+        3: {
+            id: '3',
             name: 'Min Su',
             company: 'Ola',
             theme: 'colorful',
@@ -42,7 +41,7 @@ const Maker = ({ authService }) => {
             fileName: 'hj',
             fileURL: null,
         },
-    ]);
+    });
 
     const history = useHistory();
     const onLogout = () => {
@@ -57,15 +56,29 @@ const Maker = ({ authService }) => {
         });
     });
 
-    const addCard = (card) => {
-        const updated = [...cards, card];
-        setCards(updated);
+    const createOrUpdateCard = (card) => {
+        //setCards를 부를 상태에서 전에 cards를 복사
+        setCards((cards) => {
+            const updated = { ...cards };
+            updated[card.id] = card;
+            return updated;
+        });
     };
+
+    const deleteCard = (card) => {
+        setCards((cards) => {
+            const updated = { ...cards };
+            //card에 할당하는 것이 아니라 delete
+            delete updated[card.id];
+            return updated;
+        });
+    };
+
     return (
         <section className={styles.maker}>
             <Header onLogout={onLogout} className={styles.header} />
             <div className={styles.container}>
-                <Editor cards={cards} addCard={addCard} />
+                <Editor cards={cards} addCard={createOrUpdateCard} updateCard={createOrUpdateCard} deleteCard={deleteCard} />
                 <Preview cards={cards} />
             </div>
             <Footer className={styles.footer} />
