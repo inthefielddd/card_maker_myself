@@ -6,51 +6,34 @@ import Header from '../header/header';
 import Preview from '../preview/preview';
 import styles from './maker.module.css';
 
-const Maker = ({ FileInput, authService }) => {
-    const [cards, setCards] = useState({
-        1: {
-            id: '1',
-            name: 'Hyeon Ji',
-            company: 'Ola',
-            theme: 'dark',
-            title: 'software Engineer',
-            email: 'inthefield1027@gmail.com',
-            message: 'go for it',
-            fileName: 'hj',
-            fileURL: null,
-        },
-        2: {
-            id: '2',
-            name: 'DAN BI',
-            company: 'ICIS',
-            theme: 'light',
-            title: 'Manager',
-            email: 'chl12005@gmail.com',
-            message: 'I can do it',
-            fileName: 'hj',
-            fileURL: 'hj.png',
-        },
-        3: {
-            id: '3',
-            name: 'Min Su',
-            company: 'Ola',
-            theme: 'colorful',
-            title: 'Engineer',
-            email: '12345@gmail.com',
-            message: 'code your dream',
-            fileName: 'hj',
-            fileURL: null,
-        },
-    });
-
+const Maker = ({ FileInput, authService, cardRepository }) => {
     const history = useHistory();
+    const historyState = history?.location?.state;
+    const [cards, setCards] = useState({});
+    const [userId, setUserId] = useState(historyState && historyState.id);
     const onLogout = () => {
         authService.logout();
     };
 
+    //userId가 변경이될때마다
+    useEffect(() => {
+        if (!userId) {
+            return;
+        }
+        //있다면
+        const stopSync = cardRepository.syncCards(userId, (cards) => {
+            setCards(cards);
+        });
+        //ummount
+        return () => stopSync();
+    }, [userId]);
+
+    //로그인과 관련된 useEffect
     useEffect(() => {
         authService.onAuthChange((user) => {
-            if (!user) {
+            if (user) {
+                setUserId(user.uid);
+            } else {
                 history.push('/');
             }
         });
@@ -63,6 +46,7 @@ const Maker = ({ FileInput, authService }) => {
             updated[card.id] = card;
             return updated;
         });
+        cardRepository.saveCard(userId, card);
     };
 
     const deleteCard = (card) => {
@@ -72,6 +56,7 @@ const Maker = ({ FileInput, authService }) => {
             delete updated[card.id];
             return updated;
         });
+        cardRepository.deleteCard(userId, card);
     };
 
     return (
