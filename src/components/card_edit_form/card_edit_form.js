@@ -12,7 +12,7 @@ const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
     const messageRef = useRef();
 
     //card값
-    const { name, company, theme, title, email, message, fileName, fileURL } = card;
+    const { name, company, theme, title, email, message, fileName } = card;
 
     //Delete btn
     const onSubmit = () => {
