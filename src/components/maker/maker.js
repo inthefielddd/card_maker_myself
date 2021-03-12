@@ -15,7 +15,8 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
         authService.logout();
     };
 
-    //userId가 변경이될때마다
+    //userId와 cardRepository 변경이될때마다
+    //deps에 넣어주기
     useEffect(() => {
         if (!userId) {
             return;
@@ -26,9 +27,11 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
         });
         //ummount
         return () => stopSync();
-    }, [userId]);
+    }, [userId, cardRepository]);
 
     //로그인과 관련된 useEffect
+    //authService, userId, history deps로 넣어서
+    //변경이 될때에만 마운트하게 해준다
     useEffect(() => {
         authService.onAuthChange((user) => {
             if (user) {
@@ -37,7 +40,7 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
                 history.push('/');
             }
         });
-    });
+    }, [authService, userId, history]);
 
     const createOrUpdateCard = (card) => {
         //setCards를 부를 상태에서 전에 cards를 복사

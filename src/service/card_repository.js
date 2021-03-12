@@ -1,9 +1,9 @@
-import firebaseApp from './firebase';
+import { firebaseDatabase } from './firebase';
 
 class CardRepository {
     syncCards(userId, onUpdate) {
         //firebase에 해당경로에 업데이트가 될때마다
-        const ref = firebaseApp.database().ref(`${userId}/cards`);
+        const ref = firebaseDatabase.ref(`${userId}/cards`);
         ref.on('value', (snapshot) => {
             const value = snapshot.val();
             value && onUpdate(value);
@@ -13,10 +13,10 @@ class CardRepository {
         //업데이트가 없다면 ref.off() 함수가 실행될 것이다
     }
     saveCard(userId, card) {
-        firebaseApp.database().ref(`${userId}/cards/${card.id}`).set(card);
+        firebaseDatabase.ref(`${userId}/cards/${card.id}`).set(card);
     }
     deleteCard(userId, card) {
-        firebaseApp.database().ref(`${userId}/cards/${card.id}`).remove();
+        firebaseDatabase.ref(`${userId}/cards/${card.id}`).remove();
     }
 }
 
