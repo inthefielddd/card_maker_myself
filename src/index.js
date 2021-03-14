@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import ReactDOM from 'react-dom';
 import './index.module.css';
 import App from './app';
@@ -13,7 +13,7 @@ const cardRepository = new CardRepository();
 
 //또 file을 추가 할 수도 있기때문에 props을 넣어서 만들어줘야한다
 //확장성때문에
-const FileInput = (props) => <ImageFileInput {...props} imageUploader={imageUploader} />;
+const FileInput = memo((props) => <ImageFileInput {...props} imageUploader={imageUploader} />);
 
 ReactDOM.render(
     <React.StrictMode>

@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import styles from './card_edit_form.module.css';
 import Button from '../button/button';
 
-const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
+const CardEditForm = memo(({ FileInput, card, updateCard, deleteCard }) => {
     //ref
     const nameRef = useRef();
     const companyRef = useRef();
@@ -40,7 +40,6 @@ const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
         //기존의 card를 쓰면서
         // [event.currentTarget.name] = key = company
         // event.currentTarget.value = value = 입력값
-        console.log(event.currentTarget.name, event.currentTarget.value);
         updateCard({
             ...card,
             [event.currentTarget.name]: event.currentTarget.value,
@@ -64,6 +63,5 @@ const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
             <Button name="Delete" onClick={onSubmit} className={styles.button} />
         </form>
     );
-};
-
+});
 export default CardEditForm;

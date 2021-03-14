@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import Editor from '../editor/editor';
 import Footer from '../footer/footer';
@@ -11,9 +11,9 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
     const historyState = history?.location?.state;
     const [cards, setCards] = useState({});
     const [userId, setUserId] = useState(historyState && historyState.id);
-    const onLogout = () => {
+    const onLogout = useCallback(() => {
         authService.logout();
-    };
+    }, [authService]);
 
     //userId와 cardRepository 변경이될때마다
     //deps에 넣어주기
